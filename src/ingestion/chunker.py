@@ -28,7 +28,7 @@ def clean_section_text(text: str) -> str:
     return text.strip()
 
 #input: a Destination article with multiple sections 
-#output: return a list of chunks with each chunk having the text from one section and also the 
+#output: return a list of chunks with each chunk having the text from one section and also the metadata which contains the destiantion and the section of the chunk
 MIN_CHUNK_LENGTH = 50
 def chunk_article(article: DestinationArticle) -> list[Chunk]:
     chunks = []
@@ -50,13 +50,6 @@ def chunk_article(article: DestinationArticle) -> list[Chunk]:
 if __name__ == "__main__":
     articles = parse_dump("./data/enwikivoyage-20260501-pages-articles-multistream.xml")
     print(f"Parsed {len(articles)} destination articles")
-
-    # tokyo = next((a for a in articles if a.title == "Tokyo"), None)
-    # if tokyo:
-    #     print(f"\nTokyo sections: {list(tokyo.sections.keys())}")
-    #     print(f"\nEat preview:\n{tokyo.sections.get('Eat', '')[:300]}")
-
-
     a = articles[500]
 
         
