@@ -3,6 +3,7 @@ from langchain_classic.retrievers import SelfQueryRetriever
 from langchain_community.query_constructors.chroma import ChromaTranslator
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_chroma import Chroma
+from src.state import TripState
 import chromadb
 import os
 
@@ -49,8 +50,22 @@ retriever = SelfQueryRetriever.from_llm(
     structured_query_translator=ChromaTranslator(),
 )
 
-docs = retriever.invoke("best island in malaysia")
-for doc in docs:
-    print(doc.metadata)
-    print(doc.page_content)
-    print("---")
+def rag_node(state: TripState) -> dict: 
+    try: 
+        destination = state.get("destination")
+        interests = state.get("interests")
+        interestStr = ", ".join(interests)
+        query = f"{destination} with a focus on {interestStr}"
+        docs = retriever.invoke(query)
+        context = ""
+        for doc in docs: 
+            context += doc.page_content + " "
+        context_dict = {"destination_context": context}
+
+        return context_dict
+    except Exception as e: 
+        return {"errors": {"rag_agent": str(e)}}
+
+
+mytrip = TripState(origin = "Dubai", destination = "Dubai", dates = {"start": "2026-07-10", "end": "2026-07-30"}, budget=2000, currency="USD", interests=["Nature", "Beaches", "Museums"])
+print (rag_node(mytrip))
