@@ -55,7 +55,7 @@ def rag_node(state: TripState) -> dict:
         destination = state.get("destination")
         interests = state.get("interests")
         interestStr = ", ".join(interests)
-        query = f"{destination} with a focus on {interestStr}"
+        query = f"{interestStr} in {destination}"
         docs = retriever.invoke(query)
         context = ""
         for doc in docs: 
@@ -66,6 +66,3 @@ def rag_node(state: TripState) -> dict:
     except Exception as e: 
         return {"errors": {"rag_agent": str(e)}}
 
-
-mytrip = TripState(origin = "Dubai", destination = "Dubai", dates = {"start": "2026-07-10", "end": "2026-07-30"}, budget=2000, currency="USD", interests=["Nature", "Beaches", "Museums"])
-print (rag_node(mytrip))

@@ -19,7 +19,7 @@ def flight_node (state: TripState) -> dict:
         "engine": "google_flights",
         "departure_id": departure,
         "arrival_id": arrival,
-        "currency": "USD",
+        "currency": currency,
         "type": "1",
         "outbound_date": out_date,
         "return_date": return_date
